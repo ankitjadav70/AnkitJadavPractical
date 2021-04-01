@@ -13,7 +13,7 @@ import com.example.ankitjadavpractical.data.entity.User
 import com.example.ankitjadavpractical.databinding.RowUserBinding
 import com.squareup.picasso.Picasso
 
-class UserListAdapter(val context : Context,val userList: List<User>) : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
+class UserListAdapter(val context : Context,val userList: LinkedHashSet<User>) : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListAdapter.ViewHolder {
@@ -23,7 +23,7 @@ class UserListAdapter(val context : Context,val userList: List<User>) : Recycler
 
     //this method is binding the data on the list
     override fun onBindViewHolder(holder: UserListAdapter.ViewHolder, position: Int) {
-        holder.bindItems(userList[position])
+        holder.bindItems(userList.elementAt(position))
     }
 
     //this method is giving the size of the list

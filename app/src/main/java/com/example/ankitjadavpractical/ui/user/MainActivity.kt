@@ -5,11 +5,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ankitjadavpractical.R
+import com.example.ankitjadavpractical.data.entity.Example
 import com.example.ankitjadavpractical.data.entity.User
 import com.example.ankitjadavpractical.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,8 +24,8 @@ class MainActivity : AppCompatActivity() {
     var offset : Int=0
     var limit : Int=10
     var loading :Boolean=true
-     var userList=ArrayList<User>()
-
+     var userList=LinkedHashSet<User>()
+     var adapter : UserListAdapter?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_main)
@@ -34,20 +36,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadData() {
-        mainActivityViewModel.getUser(offset,limit)?.observe(this, Observer {
-            if(it!=null) {
+            mainActivityViewModel.getUser(offset,limit)?.observe(this@MainActivity, Observer {
+            if(it.data!=null) {
                 userList.addAll(it.data.users)
-                setAdapter(userList)
+                if(adapter==null) {
+                    setAdapter(userList)
+                }
+                else{
+                    adapter?.notifyDataSetChanged()
+                }
                 loading=true
             }
         })
+
     }
 
-
-    fun setAdapter(userList: List<User>) {
+    fun setAdapter(userList: LinkedHashSet<User>) {
         rcy_user.layoutManager=LinearLayoutManager(this)
-        rcy_user.adapter=UserListAdapter(this,userList)
-
+        adapter=UserListAdapter(this,userList)
+        rcy_user.adapter=adapter
+        rcy_user.scrollToPosition(userList.size)
         var pastVisiblesItems: Int
         var visibleItemCount: Int
         var totalItemCount: Int

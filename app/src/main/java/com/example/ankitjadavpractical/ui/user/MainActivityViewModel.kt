@@ -12,7 +12,6 @@ class MainActivityViewModel : ViewModel() {
 
     var example :  Example?=null
     fun getUser(offset : Int,limit : Int) : LiveData<Example>? {
-        servicesLiveData?.postValue(null)
         servicesLiveData = UserRepository.getServicesApiCall(offset,limit)
         return servicesLiveData
     }

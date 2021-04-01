@@ -11,7 +11,7 @@ import retrofit2.Response
 
 object UserRepository {
 
-    val serviceSetterGetter = MutableLiveData<Example>()
+    var serviceSetterGetter = MutableLiveData<Example>()
 
     fun getServicesApiCall(offset : Int,limit : Int): MutableLiveData<Example> {
 
