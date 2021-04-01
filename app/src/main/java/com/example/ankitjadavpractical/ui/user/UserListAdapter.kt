@@ -38,16 +38,16 @@ class UserListAdapter(val context : Context,val userList: LinkedHashSet<User>) :
             // load the image with Picasso
            Picasso.get().load(user.image).into(binding.ivUser)
 
-            val adapter=ItemListAdapter(user.items)
+            val adapter= user.items?.let { ItemListAdapter(it) }
           val layoutManager=  GridLayoutManager(context, 2)
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL)
             layoutManager.setSpanSizeLookup(object : SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    if(user.items.size%2==0)
+                    if(user.items!!.size % 2==0)
                     {
                       return  1
                     }
-                    else if(position==user.items.lastIndex){
+                    else if(position== user.items!!.lastIndex){
                       return  2
                     }
                     return  1

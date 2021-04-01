@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     fun loadData() {
             mainActivityViewModel.getUser(offset,limit)?.observe(this@MainActivity, Observer {
             if(it.data!=null) {
-                userList.addAll(it.data.users)
+                it.data!!.users?.let { it1 -> userList.addAll(it1) }
                 if(adapter==null) {
                     setAdapter(userList)
                 }
